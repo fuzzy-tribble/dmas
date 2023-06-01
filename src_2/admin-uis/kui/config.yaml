@@ -1,0 +1,5 @@
+clusters:
+  - name: "Local Kafka"
+    bootstrapServers:
+      - "localhost:9092"
+      - "message-broker-kafka-1:9092"

@@ -1,0 +1,26 @@
+services:
+
+  # database service for storing/tracking reminders
+  subscriber-db:
+    image: mongo:latest
+    container_name: subscriber-db
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASS}
+    ports:
+      - "27017:27017"
+    volumes:
+      - "./${MONGO_VOLUME}:/data/subscriber-db"
+
+  # api service for exposing endpoints to reminders-service
+  subscriber-component:
+    build: "./subscriber/."
+    container_name: subscriber-component
+    volumes:
+      - .:/subscriber-component
+      - "./${LOGS_VOLUME}:/api/logs"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - subscriber-db

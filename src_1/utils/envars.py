@@ -1,0 +1,4 @@
+MAS_UID='wellness-mas-1'
+
+MAS_DB_URI='localhost:5432'
+MAS_DB_PASSWORD='3209820394823094'

@@ -1,0 +1,31 @@
+version: '3'
+# kafka broker servers
+services:
+
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    ports:
+      - '2181:2181'
+    environment:
+      # PERMISSIONLESS?INSECURE - FOR TESTING ONLY
+      ALLOW_ANONYMOUS_LOGIN: 'yes'
+    networks:
+      - kafka-network
+
+  kafka:
+    image: 'bitnami/kafka:latest'
+    ports:
+      - '9092:9092'
+    environment:
+    # PERMISSIONLESS/INSECURE - FOR TESTING ONLY
+      ALLOW_PLAINTEXT_LISTENER: yes
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    networks:
+      - kafka-network
+
+networks:
+  kafka-network:
+
+
+# NOTE: Kubernetes does not natively support autoscaling for stateful services like Kafka. This is due to the nature of Kafka, where each broker has its unique identity, state, and set of responsibilities (like topic partitions it is responsible for). Hence, traditional methods like Horizontal Pod Autoscaling (HPA) used for stateless services won't work with Kafka. Can use KEDA, STRIMZI, etc

@@ -1,0 +1,6 @@
+python-dotenv
+pymongo
+# kafka
+aiokafka
+aiohttp
+openai

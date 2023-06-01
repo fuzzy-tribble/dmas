@@ -1,0 +1,8 @@
+name: handle_external_event
+description: when triggered, identify the source of the payload, 
+
+nodes:
+
+flows:
+  handle_external_event_flow:
+    start:

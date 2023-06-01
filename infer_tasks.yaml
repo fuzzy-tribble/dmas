@@ -1,0 +1,22 @@
+uid: "director"
+scope: >
+  This model handles generating a prioritized list of tasks from available tasks. It assumes that the inputs are already request-like things
+prompt: >
+  
+  Output a prioritized list of tasks that best fit the request from the available_tasks.
+
+  available_tasks = {
+    'remind': 'create reminders',
+    '...'
+  }
+
+  Example 1:
+    user: I found out yesterday that my teacher moved the assignment up. Now its due Monday. Can you update that reminder please?
+    response: [
+      ('remind')
+    ]
+
+  Example 2:
+    user: ...
+
+

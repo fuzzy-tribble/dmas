@@ -1,0 +1,27 @@
+name: sample_skill
+description: Handle internal events
+nodes:
+  - name: task1
+    type: python
+    module: sample_module
+    class: Task1
+    queue: queue1
+
+  - name: task2
+    type: python
+    module: sample_module
+    class: Task2
+    queue: queue2
+
+# Define the flows
+flows:
+  sample_flow:
+    start:
+      task1:
+        map: [input1, input2, input3]
+        finalize:
+          task2:
+            retry: 3
+    finalize:
+      - task1
+      - task2

@@ -1,0 +1,71 @@
+metadata:
+  - collection: internal-messages
+    description: >
+      This collection is used to store all internal messages between components.
+  - collection: internal-components
+    description: >
+      This collection contains internal components used in the system.
+
+collections:
+  
+  # internal-components is the internal component management system for all system components, api-keys are encrypted
+  - name: internal-components
+    indexes:
+      - keys: {created_on: 1}
+      - keys: {updated_at: 1}
+      - keys: {uid: 1}
+        unique: true
+      - keys: {org_chart: 1}
+      - keys: {job_description: 1}
+      - keys: {rules: 1}
+      - keys: {long_term_memory_resource: 1}
+      - keys: {short-term-memory_resource: 1}
+      - keys: {plan_generator_resource: 1}
+      - keys: {plan_executor_resource: 1}
+      - keys: {evaluator_resource: 1}
+      - keys: {default_interoceptor_callback: 1}
+      - keys: {default_exteroceptor_callback: 1}
+      - keys: {additional_native_skills: 1}
+      - keys: {status: 1}
+    access:
+      read: ["internal_components_read"]
+      write: ["internal_components_write"]
+  
+  # user-data is encrypted via multisig between the user and the system, both contacts must approve access for utilization
+  - name: user-data
+    indexes:
+      - keys: {uid: 1}
+        unique: true
+      - keys: {created_on: 1}
+      - keys: {updated_at: 1}
+      - keys: {versioning: 1}
+      - keys: {contact_info: 1}
+      - keys: {preferences: 1}
+      - keys: {last_correspondence: 1}
+
+functions:
+  - name: ensure_versioning
+    code: >
+      db.getCollectionNames().forEach(function(name) {
+        db.getCollection(name).createIndex({_id: 1, versioning: 1}, {unique: true});
+        db.getCollection(name).createIndex({_id: 1, versioning: -1});
+      })
+  - name: cleanup_memory
+    code: >
+      var currentDate = new Date();
+      var yearAgo = new Date(currentDate.setFullYear(currentDate.getFullYear() - 1));
+      var expiredMemorys = db.internal-components.find({memory: {$lt: yearAgo}});
+      expiredMemorys.forEach(function(memory) {
+        // Notify creator
+        // Remove expired memory
+      });
+
+hooks:
+  - name: before_insert
+    code: >
+      if (doc.created_on == null) {
+        doc.created_on = new Date();
+      }
+      if (doc.updated_on == null) {
+        doc.updated_on = new Date();
+      }

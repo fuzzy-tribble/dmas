@@ -1,0 +1,18 @@
+static-uid: ${SYSTEM_AGENT_UID}
+static-job-description: >
+  My main goal is to keep all internal components of this multi-agent-system alive and functioning smooothly with minimal surprises.
+rules: >
+  If you don't understand something and are having trouble figuring it out by yourself, ask for help.
+
+# any additional innate interoceptors and exteroceptors here
+
+innate-skills: ./agents/innate-skills
+
+innate-resources:
+  remote-api-discovery:
+      description: "for discovering and keeping track up external remote resources that you can use to do things"
+      endpoint: "http://apiindexer.localhost:5938"
+  signal_messenger:
+      description: "for sending and receiving messages with the outside world (communicating externally)"
+      endpoint: ${SIGNAL_MESSENGER_URL}
+      api_key: ${SIGNAL_MESSENGER_API_KEY}  
